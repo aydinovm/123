@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+.sidebar {
+    width: 240px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #2c3e50, #34495e);
+    color: #ecf0f1;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    height: 75px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo img {
+    height: 100%;
+}
+
+.sidebar_menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar_menu > ul > li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar_menu li a {
+    display: block;
+    padding: 5% 6%;
+    text-decoration: none;
+    color: #ecf0f1;
+    transition: background 0.3s;
+    position: relative;
+}
+
+.sidebar_menu li a:hover {
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    padding-left: 25px;
+}
+
+.sidebar_menu li ul {
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar_menu li.active > ul {
+    display: block;
+}
+
+.sidebar_menu li ul li a {
+    padding-left: 40px;
+    font-size: 14px;
+    color: #bdc3c7;
+}
+
+.sidebar_menu li ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ecf0f1;
+}
+
+/* .sidebar_menu li a::before {
+    content: "›";
+    position: absolute;
+    left: 10px;
+    transition: transform 0.3s;
+} */
+
+
+.container {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.language-menu, .user-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.language-button, .user-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.flag, .user-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.arrow {
+    margin-left: 5px;
+}
+
+.language-dropdown, .user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    min-width: 150px;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.language-dropdown a, .user-dropdown a {
+    display: block;
+    padding: 10px;
+    color: black;
+    text-decoration: none;
+}
+
+.language-dropdown a:hover, .user-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+/* .container_content{
+    display: flex;
+    flex-direction: column;
+    padding-top: 3%;
+}
+.public_news label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.input-field {
+    width: 100%;
+    padding: 1%;
+    margin: 1% 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #4e44cc;
+} */
+ /* Стили для таблицы */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 3%;
+    font-family: Arial, sans-serif;
+}
+
+.data-table th, .data-table td {
+    padding: 2%;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.data-table th {
+    background-color: #f4f4f4;
+}
+
+/* Стили для кнопок */
+.edit-btn, .delete-btn {
+    padding: 2% 8%;
+    /* margin-right: 5px; */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.edit-btn {
+    background-color:#6c63ff;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #4e44cc;
+}   
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: red;
+}
+
+

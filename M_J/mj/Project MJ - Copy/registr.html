@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация и сброс пароля</title>
+    <link rel="stylesheet" href="./assets/css/registr.css">
+</head>
+<body>
+    <div class="form-container" id="registerForm">
+        <h2>Регистрация</h2>
+        <input type="text" id="regUsername" placeholder="Логин">
+        <input type="email" id="regEmail" placeholder="Email">
+        <input type="password" id="regPassword" placeholder="Пароль">
+        <button onclick="register()">Зарегистрироваться</button>
+        <span class="toggle-link" onclick="toggleForm()">Забыли пароль?</span>
+    </div>
+    
+    <div class="form-container" id="resetForm" style="display: none;">
+        <h2>Сброс пароля</h2>
+        <input type="email" id="resetEmail" placeholder="Введите Email">
+        <button onclick="resetPassword()">Сбросить пароль</button>
+        <span class="toggle-link" onclick="toggleForm()">Вернуться к регистрации</span>
+    </div>
+    
+    <script>
+        function toggleForm() {
+            let regForm = document.getElementById("registerForm");
+            let resetForm = document.getElementById("resetForm");
+            if (regForm.style.display === "none") {
+                regForm.style.display = "block";
+                resetForm.style.display = "none";
+            } else {
+                regForm.style.display = "none";
+                resetForm.style.display = "block";
+            }
+        }
+        
+        function register() {
+            let username = document.getElementById("regUsername").value;
+            let email = document.getElementById("regEmail").value;
+            let password = document.getElementById("regPassword").value;
+            
+            if (username && email && password) {
+                alert("Регистрация успешна!");
+                window.location.href = "login.html";
+            } else {
+                alert("Заполните все поля!");
+            }
+        }
+        
+        function resetPassword() {
+            let email = document.getElementById("resetEmail").value;
+            
+            if (email) {
+                alert("На ваш email отправлены инструкции по сбросу пароля.");
+            } else {
+                alert("Введите email!");
+            }
+        }
+    </script>
+</body>
+</html>     

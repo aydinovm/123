@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="./assets/css/account.css">
+</head>
+<body>
+    <header>                
+        <div class="container">
+            <nav>    
+                <div class="nav_left">
+                  <a href="#">Главная</a>
+                  <a href="#">Новая Заявка</a>
+                </div>
+                <div class="nav_right">
+                   <img src="./assets/icons/person_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg" alt="icon" onclick="toggleMenu()"> 
+                   <div class="user-menu" id="userMenu">
+                       <a href="#" onclick="logout()">Выйти</a>
+                   </div>
+                </div>  
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="profile-info">
+                <h3>Информация o пользователе</h3>
+                <p><span>Имя:</span> Иван</p>
+                <p><span>Фамилия:</span> Иванов</p>
+                <p><span>Email:</span> ivan.ivanov@example.com</p>
+                <p><span>Отдел:</span> IT</p>
+                <p><span>Должность:</span> Разработчик</p>
+            </div>
+            <div class="chat-box">
+                <h3>Мои заявки</h3>
+                <div class="ticket-item" onclick="openChat(1)">Запрос 1</div>
+                <div class="ticket-item" onclick="openChat(2)">Запрос 2</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openChat(id) {
+            alert("Открыт чат для запроса " + id);
+        }
+        function logout() {
+            alert("Выход из аккаунта");
+            window.location.href = "login.html";
+        }
+        function toggleMenu() {
+        let menu = document.getElementById("userMenu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+    function logout() {
+        alert("Выход из аккаунта");
+        window.location.href = "login.html";
+    }
+    document.addEventListener("click", function(event) {
+        let menu = document.getElementById("userMenu");
+        let icon = document.querySelector(".nav_right img");
+        if (!menu.contains(event.target) && !icon.contains(event.target)) {
+            menu.style.display = "none";
+        }
+    });
+    </script>
+</body>
+</html>

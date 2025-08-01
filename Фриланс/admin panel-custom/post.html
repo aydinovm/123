@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Panel</title>
+    <link rel="stylesheet" href="./assets/css/post.css">
+</head>
+<body>
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+    
+    <header></header>
+    <main>
+        <div class="sidebar">
+            <div class="logo">
+                <img src="/api/placeholder/150/60" alt="logo">
+            </div>
+            <div class="sidebar_menu">
+                <ul>
+                    <li>
+                        <a href="#" onclick="toggleSubmenu(this)">News</a>
+                        <ul>
+                            <li><a href="./post.html">Post</a></li>
+                            <li><a href="./index2.html">List</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" onclick="toggleSubmenu(this)">chto to</a>
+                        <ul>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="container_nav">
+                <nav>
+                    <div class="nav_left">
+                        <h4>Admin Panel</h4>
+                    </div>
+                   <div class="nav_right">
+                        <div class="language-menu">
+                            <button class="language-button" onclick="toggleDropdown('language')">
+                                <img src="./assets/images/eng_flag.jpg" alt="English" class="flag"> EN <span class="arrow">▼</span>
+                            </button>
+                            <div class="language-dropdown" id="language-dropdown">
+                                <a href="#" onclick="changeLanguage('en')"><img src="./assets/images/eng_flag.jpg" alt="English" class="flag"> EN</a>
+                                <a href="#" onclick="changeLanguage('ru')"><img src="./assets/images/rus_flag.webp" alt="Русский" class="flag"> RU</a>
+                                <a href="#" onclick="changeLanguage('az')"><img src="./assets/images/aze_flag.png" alt="Azerbaijan" class="flag"> AZ</a>
+                            </div>
+                        </div>
+                        <div class="user-menu">
+                            <button class="user-button" onclick="toggleDropdown('user')">
+                                <img src="./assets/icons/user.svg" alt="User" class="user-icon"> 
+                            </button>
+                            <div class="user-dropdown" id="user-dropdown">
+                                <a href="#" onclick="editProfile()">Редактировать</a>
+                                <a href="#" onclick="logout()">Выход</a>
+                            </div>
+                        </div>
+                   </div>
+                </nav>
+            </div>
+            <div class="container_content">
+                <div class="public_news">
+                    <label for="title">Title</label><br>
+                    <input type="text" id="titleInput" name="title" class="input-field"><br>
+                
+                    <label for="description">Description</label><br>
+                    <input type="text" id="descriptionInput" name="description" class="input-field"><br>
+                
+                    <label for="file">Img</label><br>
+                    <input type="file" id="fileInput" class="input-field"><br>
+                
+                    <button type="submit" class="submit-button">Submit</button>
+                </div>
+            </div>
+        </div>  
+    <script src="./assets/scripts/post.js"></script>
+</body>
+</html>

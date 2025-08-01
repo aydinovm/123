@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Чат";
+}
+<h3>Мои заявки</h3>
+@foreach (var ticket in Model)
+{
+    <div class="ticket-item" onclick="loadChat(@ticket.Id)">@ticket.Title</div>
+}
+
+<div class="chat-box">
+    <h3>Чат по заявке</h3>
+    <div id="chatMessages">Выберите заявку</div>
+    <input type="text" id="messageInput" placeholder="Введите сообщение...">
+    <button onclick="sendMessage()">Отправить</button>
+</div>
+
+<script>
+    function loadChat(ticketId) {
+        fetch(`/Chat/GetMessages?ticketId=${ticketId}`)
+            .then(response => response.json())
+            .then(messages => {
+                let chatBox = document.getElementById("chatMessages");
+                chatBox.innerHTML = messages.map(m => `<p>${m.Text}</p>`).join("");
+            });
+    }
+
+    function sendMessage() {
+        let text = document.getElementById("messageInput").value;
+        fetch('/Chat/SendMessage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ticketId: 1, text: text }) // ID заявки пока 1
+        }).then(() => loadChat(1));
+    }
+</script>

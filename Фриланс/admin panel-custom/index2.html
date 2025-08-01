@@ -1,0 +1,787 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Table Admin Panel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* Кнопка мобильного меню */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #2c3e50;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .sidebar {
+            width: 240px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .logo {
+            height: 75px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo img {
+            height: 100%;
+            max-width: 150px;
+            object-fit: contain;
+        }
+
+        .sidebar_menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar_menu > ul > li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar_menu li a {
+            display: block;
+            padding: 5% 6%;
+            text-decoration: none;
+            color: #ecf0f1;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .sidebar_menu li a:hover {
+            padding-left: 25px;
+        }
+
+        .sidebar_menu li ul {
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar_menu li.active > ul {
+            display: block;
+        }
+
+        .sidebar_menu li ul li a {
+            padding-left: 40px;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        .sidebar_menu li ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ecf0f1;
+        }
+
+        .container {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav_right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .language-menu, .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .language-button, .user-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .language-button:hover, .user-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .flag, .user-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .arrow {
+            margin-left: 5px;
+        }
+
+        .language-dropdown, .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            min-width: 150px;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        .language-dropdown a, .user-dropdown a {
+            display: block;
+            padding: 10px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .language-dropdown a:hover, .user-dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Стили для таблицы */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            color: #6c757d;
+        }
+
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Стили для кнопок */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+            min-width: 60px;
+        }
+
+        .edit-btn {
+            background-color: #6c63ff;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #4e44cc;
+            transform: translateY(-1px);
+        }   
+
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #e60000;
+            transform: translateY(-1px);
+        }
+
+        /* Overlay для мобильного меню */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Tablet Styles */
+        @media screen and (max-width: 1024px) {
+            .container {
+                margin-left: 200px;
+                padding: 15px;
+            }
+            
+            .sidebar {
+                width: 200px;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+            
+            .edit-btn, .delete-btn {
+                padding: 5px 8px;
+                font-size: 11px;
+                min-width: 50px;
+            }
+        }
+
+        /* Mobile Styles */
+        @media screen and (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+                padding-top: 20px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .container {
+                margin-left: 0;
+                padding: 70px 15px 15px 15px;
+            }
+
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .nav_left {
+                order: 2;
+            }
+
+            .nav_right {
+                order: 1;
+                align-self: flex-end;
+            }
+
+            /* Адаптивная таблица для мобильных */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .data-table {
+                min-width: 600px;
+            }
+
+            .data-table th, .data-table td {
+                padding: 10px 8px;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .edit-btn, .delete-btn {
+                padding: 4px 8px;
+                font-size: 10px;
+                min-width: 45px;
+            }
+
+            .language-dropdown, .user-dropdown {
+                position: fixed;
+                top: auto;
+                right: 15px;
+                left: auto;
+                min-width: 120px;
+            }
+        }
+
+        /* Alternative mobile table layout */
+        @media screen and (max-width: 600px) {
+            .table-responsive {
+                display: none;
+            }
+            
+            .table-cards {
+                display: block;
+            }
+            
+            .table-card {
+                background: white;
+                margin-bottom: 15px;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            
+            .card-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .card-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+            
+            .card-label {
+                font-weight: 600;
+                color: #495057;
+                font-size: 12px;
+                text-transform: uppercase;
+            }
+            
+            .card-value {
+                color: #6c757d;
+                font-size: 14px;
+            }
+            
+            .card-actions {
+                display: flex;
+                gap: 8px;
+                justify-content: flex-end;
+            }
+        }
+
+        .table-cards {
+            display: none;
+        }
+
+        /* Small Mobile Styles */
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 70px 10px 10px 10px;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .language-button, .user-button {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+
+            .flag, .user-icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            nav h4 {
+                font-size: 16px;
+            }
+        }
+
+        /* Hover эффекты только для не-touch устройств */
+        @media (hover: hover) {
+            .language-button:hover, .user-button:hover {
+                background-color: #f0f0f0;
+            }
+            
+            .sidebar_menu li a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка мобильного меню -->
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
+    
+    <!-- Overlay для закрытия меню -->
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+    
+    <header></header>
+    <main>
+        <div class="sidebar">
+            <div class="logo">
+                <img src="/api/placeholder/150/60" alt="logo">
+            </div>
+            <div class="sidebar_menu">
+                <ul>
+                    <li>
+                        <a href="#" onclick="toggleSubmenu(this)">News</a>
+                        <ul>
+                            <li><a href="./post.html">Post</a></li>
+                            <li><a href="./index2.html">List</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" onclick="toggleSubmenu(this)">chto to</a>
+                        <ul>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="container_nav">
+                <nav>
+                    <div class="nav_left">
+                        <h4>Admin Panel</h4>
+                    </div>
+                   <div class="nav_right">
+                        <div class="language-menu">
+                            <button class="language-button" onclick="toggleDropdown('language')">
+                                <img src="/api/placeholder/20/20" alt="English" class="flag"> EN <span class="arrow">▼</span>
+                            </button>
+                            <div class="language-dropdown" id="language-dropdown">
+                                <a href="#" onclick="changeLanguage('en')"><img src="/api/placeholder/20/20" alt="English" class="flag"> EN</a>
+                                <a href="#" onclick="changeLanguage('ru')"><img src="/api/placeholder/20/20" alt="Русский" class="flag"> RU</a>
+                                <a href="#" onclick="changeLanguage('az')"><img src="/api/placeholder/20/20" alt="Azerbaijan" class="flag"> AZ</a>
+                            </div>
+                        </div>
+                        <div class="user-menu">
+                            <button class="user-button" onclick="toggleDropdown('user')">
+                                <img src="/api/placeholder/20/20" alt="User" class="user-icon"> 
+                            </button>
+                            <div class="user-dropdown" id="user-dropdown">
+                                <a href="#" onclick="editProfile()">Редактировать</a>
+                                <a href="#" onclick="logout()">Выход</a>
+                            </div>
+                        </div>
+                   </div>
+                </nav>
+            </div>
+            <div class="container_content">
+                <!-- Обычная таблица для десктопа и планшетов -->
+                <div class="table-container table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Data (Time)</th>
+                                <th>User</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Example Title 1</td>
+                                <td>2025-04-08 12:30</td>
+                                <td>user1</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editItem(1)">Edit</button>
+                                        <button class="delete-btn" onclick="deleteItem(1)">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Example Title 2</td>
+                                <td>2025-04-09 14:45</td>
+                                <td>user2</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editItem(2)">Edit</button>
+                                        <button class="delete-btn" onclick="deleteItem(2)">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Example Title 3</td>
+                                <td>2025-04-09 14:45</td>
+                                <td>user3</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editItem(3)">Edit</button>
+                                        <button class="delete-btn" onclick="deleteItem(3)">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Example Title 4</td>
+                                <td>2025-04-09 14:45</td>
+                                <td>user4</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editItem(4)">Edit</button>
+                                        <button class="delete-btn" onclick="deleteItem(4)">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Карточки для мобильных устройств -->
+                <div class="table-cards">
+                    <div class="table-card">
+                        <div class="card-row">
+                            <span class="card-label">Title:</span>
+                            <span class="card-value">Example Title 1</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Date:</span>
+                            <span class="card-value">2025-04-08 12:30</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">User:</span>
+                            <span class="card-value">user1</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Actions:</span>
+                            <div class="card-actions">
+                                <button class="edit-btn" onclick="editItem(1)">Edit</button>
+                                <button class="delete-btn" onclick="deleteItem(1)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="card-row">
+                            <span class="card-label">Title:</span>
+                            <span class="card-value">Example Title 2</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Date:</span>
+                            <span class="card-value">2025-04-09 14:45</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">User:</span>
+                            <span class="card-value">user2</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Actions:</span>
+                            <div class="card-actions">
+                                <button class="edit-btn" onclick="editItem(2)">Edit</button>
+                                <button class="delete-btn" onclick="deleteItem(2)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="card-row">
+                            <span class="card-label">Title:</span>
+                            <span class="card-value">Example Title 3</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Date:</span>
+                            <span class="card-value">2025-04-09 14:45</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">User:</span>
+                            <span class="card-value">user3</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Actions:</span>
+                            <div class="card-actions">
+                                <button class="edit-btn" onclick="editItem(3)">Edit</button>
+                                <button class="delete-btn" onclick="deleteItem(3)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="card-row">
+                            <span class="card-label">Title:</span>
+                            <span class="card-value">Example Title 4</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Date:</span>
+                            <span class="card-value">2025-04-09 14:45</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">User:</span>
+                            <span class="card-value">user4</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Actions:</span>
+                            <div class="card-actions">
+                                <button class="edit-btn" onclick="editItem(4)">Edit</button>
+                                <button class="delete-btn" onclick="deleteItem(4)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </main>
+    <footer></footer>
+
+    <script>
+        // Функция для переключения сайдбара на мобильных устройствах
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Функция для закрытия сайдбара
+        function closeSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // Функция для переключения подменю
+        function toggleSubmenu(element) {
+            const parent = element.parentElement;
+            const isActive = parent.classList.contains('active');
+            
+            // Закрываем все открытые подменю
+            document.querySelectorAll('.sidebar_menu li.active').forEach(li => {
+                li.classList.remove('active');
+            });
+            
+            // Открываем текущее, если оно было закрыто
+            if (!isActive) {
+                parent.classList.add('active');
+            }
+        }
+
+        // Функция для переключения dropdown меню
+        function toggleDropdown(type) {
+            const dropdown = document.getElementById(type + '-dropdown');
+            const isVisible = dropdown.style.display === 'block';
+            
+            // Закрываем все dropdown
+            document.querySelectorAll('.language-dropdown, .user-dropdown').forEach(dd => {
+                dd.style.display = 'none';
+            });
+            
+            // Открываем текущий, если он был закрыт
+            if (!isVisible) {
+                dropdown.style.display = 'block';
+            }
+        }
+
+        // Закрытие dropdown при клике вне их области
+        document.addEventListener('click', function(event) {
+            const isLanguageButton = event.target.closest('.language-button');
+            const isUserButton = event.target.closest('.user-button');
+            const isDropdown = event.target.closest('.language-dropdown, .user-dropdown');
+            
+            if (!isLanguageButton && !isUserButton && !isDropdown) {
+                document.querySelectorAll('.language-dropdown, .user-dropdown').forEach(dd => {
+                    dd.style.display = 'none';
+                });
+            }
+        });
+
+        // Закрытие сайдбара при изменении размера окна
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeSidebar();
+            }
+        });
+
+        // Функции для работы с таблицей
+        function editItem(id) {
+            console.log('Edit item with ID:', id);
+            // Здесь добавьте логику редактирования
+            alert('Editing item ' + id);
+        }
+
+        function deleteItem(id) {
+            console.log('Delete item with ID:', id);
+            // Здесь добавьте логику удаления
+            if (confirm('Are you sure you want to delete item ' + id + '?')) {
+                alert('Item ' + id + ' deleted');
+                // Логика удаления из DOM или отправки запроса на сервер
+            }
+        }
+
+        // Ваши существующие функции
+        function changeLanguage(lang) {
+            console.log('Language changed to:', lang);
+            toggleDropdown('language');
+        }
+
+        function editProfile() {
+            console.log('Edit profile clicked');
+        }
+
+        function logout() {
+            console.log('Logout clicked');
+        }
+    </script>
+</body>
+</html>

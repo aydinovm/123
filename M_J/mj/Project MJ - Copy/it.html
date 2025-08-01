@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель IT-специалиста</title>
+    <link rel="stylesheet" href="./assets/css/it.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+header {
+    background-color: #433d3d;
+    color: white;
+    border-bottom: 1px solid #ccc;  
+    position: relative;
+}
+nav{
+    display:flex ;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px;
+}
+nav a{
+    font-size: 18px;
+    font-weight: 400;
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+}
+.nav_left{
+    display: flex;
+    align-items: center;
+}
+.nav_right {
+    position: relative;
+}
+.nav_right img{
+    width: 30px;
+    cursor: pointer;
+}
+.user-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: white;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 150px;
+}
+.user-menu a {
+    display: block;
+    padding: 8px;
+    color: black;
+    text-decoration: none;
+}
+.user-menu a:hover {
+    background: #f0f0f0;
+}
+main{
+  
+}
+.container {
+    display: flex;
+    padding: 1% 3%;
+   
+}
+.ticket-list, .chat-box {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 15px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+.ticket-list {
+    width: 30%;
+}
+.chat-box {
+    flex-grow: 1;
+}
+.ticket-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+.ticket-item:hover {
+    background: #f0f0f0;
+}
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    background: #fff;
+}
+.chat-input {
+    display: flex;
+    padding: 10px 0;
+}
+.chat-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+.chat-input button {
+    padding: 8px 12px;
+    border: none;
+    background: #d00;
+    color: white;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <header>                
+        <div class="container">
+            <nav>    
+                <div class="nav_left">
+                  <a href="#">Главная</a>
+                  <a href="#">Новая Заявка</a>
+                </div>
+                <div class="nav_right">
+                   <img src="./assets/icons/person_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg" alt="icon" onclick="toggleMenu()"> 
+                   <div class="user-menu" id="userMenu">
+                       <a href="#" onclick="logout()">Выйти</a>
+                   </div>
+                </div>  
+            </nav>
+        </div>
+    </header>
+<main>
+    <div class="container">
+        <div class="ticket-list">
+            <h3>Мои заявки</h3>
+            <div class="ticket-item" onclick="openChat(1)">Запрос 1</div>
+            <div class="ticket-item" onclick="openChat(2)">Запрос 2</div>
+        </div>
+        <div class="chat-box">
+            <h3>Чат по заявке</h3>
+            <div class="chat-messages" id="chatMessages">Выберите заявку для общения</div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Введите сообщение...">
+                <button onclick="sendMessage()">Отправить</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <script>
+        function openChat(id) {
+            document.getElementById("chatMessages").innerHTML = "<p>Открыт чат для запроса " + id + "</p>";
+        }
+        function sendMessage() {
+            let messageInput = document.getElementById("messageInput");
+            let messageText = messageInput.value.trim();
+            if (messageText === "") return;
+            
+            let chatMessages = document.getElementById("chatMessages");
+            let messageElement = document.createElement("div");
+            messageElement.textContent = messageText;
+            messageElement.style.padding = "8px";
+            messageElement.style.margin = "5px 0";
+            messageElement.style.background = "#e1ffc7";
+            messageElement.style.borderRadius = "5px";
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            messageInput.value = "";
+        }
+        function toggleMenu() {
+        let menu = document.getElementById("userMenu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+    function logout() {
+        alert("Выход из аккаунта");
+        window.location.href = "login.html";
+    }
+    document.addEventListener("click", function(event) {
+        let menu = document.getElementById("userMenu");
+        let icon = document.querySelector(".nav_right img");
+        if (!menu.contains(event.target) && !icon.contains(event.target)) {
+            menu.style.display = "none";
+        }
+    });
+    </script>
+</body>
+</html>

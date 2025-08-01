@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель IT-директора</title>
+    <link rel="stylesheet" href="./assets/css/jami.css">
+</head>
+<body>
+<header>                
+    <div class="container">
+        <nav>    
+            <div class="nav_left">
+              <a href="#">Главная</a>
+              <a href="#">Новая Заявка</a>
+            </div>
+            <div class="nav_right">
+               <img src="./assets/icons/person_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg" alt="icon" onclick="toggleMenu()"> 
+               <div class="user-menu" id="userMenu">
+                   <a href="#" onclick="logout()">Выйти</a>
+               </div>
+            </div>  
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div class="ticket-list">
+            <h3>Открытые заявки</h3>
+            <div class="ticket-item" onclick="viewTicket(1)">Запрос 1</div>
+            <div class="ticket-item" onclick="viewTicket(2)">Запрос 2</div>
+        </div>
+        <div class="it-panel">
+            <h3>Детали запроса</h3>
+            <div class="ticket-info" id="ticketInfo">Выберите заявку для просмотра</div>
+            <h3>Назначение исполнителя</h3>
+            <div class="assign-form">
+                <select id="itEmployee">
+                    <option value="1">ИТ-Специалист 1</option>
+                    <option value="2">ИТ-Специалист 2</option>
+                </select>
+                <button onclick="assignTicket()">Назначить</button>
+            </div>
+        </div>
+    </div>
+</main>    
+<script>
+    function viewTicket(id) {
+        document.getElementById("ticketInfo").innerHTML = "Детали запроса " + id;
+    }
+    function assignTicket() {
+        let employee = document.getElementById("itEmployee").value;
+        alert("Заявка назначена на ИТ-Специалиста " + employee);
+    }
+    function toggleMenu() {
+        let menu = document.getElementById("userMenu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+    function logout() {
+        alert("Выход из аккаунта");
+        window.location.href = "login.html";
+    }
+    document.addEventListener("click", function(event) {
+        let menu = document.getElementById("userMenu");
+        let icon = document.querySelector(".nav_right img");
+        if (!menu.contains(event.target) && !icon.contains(event.target)) {
+            menu.style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>

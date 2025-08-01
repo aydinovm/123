@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат поддержки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: auto;
+            gap: 20px;
+        }
+        .ticket-list {
+            width: 30%;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        .chat-box {
+            flex-grow: 1;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            background: #fff;
+        }
+        .chat-input {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+        .chat-input input, .chat-input button, .chat-input input[type='file'] {
+            margin-top: 5px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .chat-input button {
+            padding: 8px 12px;
+            border: none;
+            background: #d00;
+            color: white;
+            cursor: pointer;
+        }
+        .ticket-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .ticket-item:hover {
+            background: #f0f0f0;
+        }
+        .chat-message img {
+            max-width: 200px;
+            display: block;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="ticket-list">
+            <h3>Заявки</h3>
+            <div class="ticket-item" onclick="openChat(1)">Запрос 1</div>
+            <div class="ticket-item" onclick="openChat(2)">Запрос 2</div>
+        </div>
+        <div class="chat-box">
+            <h3>Чат поддержки</h3>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Введите сообщение...">
+                <input type="file" id="fileInput" accept="image/*">
+                <button onclick="sendMessage()">Отправить</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function sendMessage() {
+            let messageInput = document.getElementById("messageInput");
+            let fileInput = document.getElementById("fileInput");
+            let messageText = messageInput.value.trim();
+            let file = fileInput.files[0];
+            
+            if (messageText === "" && !file) return;
+            
+            let chatMessages = document.getElementById("chatMessages");
+            let messageElement = document.createElement("div");
+            messageElement.classList.add("chat-message");
+            
+            if (messageText) {
+                let textElement = document.createElement("p");
+                textElement.textContent = messageText;
+                textElement.style.padding = "8px";
+                textElement.style.margin = "5px 0";
+                textElement.style.background = "#e1ffc7";
+                textElement.style.borderRadius = "5px";
+                messageElement.appendChild(textElement);
+            }
+            
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let imgElement = document.createElement("img");
+                    imgElement.src = e.target.result;
+                    messageElement.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            messageInput.value = "";
+            fileInput.value = "";
+        }
+        
+        function openChat(id) {
+            document.getElementById("chatMessages").innerHTML = "<p>Открыт чат для запроса " + id + "</p>";
+        }
+    </script>
+</body>
+</html>         
